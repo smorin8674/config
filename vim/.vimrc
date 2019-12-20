@@ -1,6 +1,7 @@
 syntax enable
 set tabstop=8
 set expandtab
+set softtabstop=8
 set number
 filetype indent on
 set autoindent
@@ -14,9 +15,13 @@ set backspace=indent,eol,start
 set mouse=a
 
 
-call plug#begin('~/.vim/plugged')
+call plug#begin("~/.vim/plugged")
 
-Plug 'sainnhe/vim-color-atlantis'       " Colorscheme
+" Plug 'sainnhe/vim-color-atlantis'       " Colorscheme atlantis
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
+Plug 'itchyny/lightline.vim'
+Plug 'arcticicestudio/nord-vim'           " Colorscheme matching TMUX
 Plug 'vim-scripts/c.vim'
 Plug 'gabrielelana/vim-markdown'        " Markdown formatting
 Plug 'lervag/vimtex'                    " Latex
@@ -27,12 +32,6 @@ Plug 'jiangmiao/auto-pairs'             " auto match brackets
 
 call plug#end()
 
-set termguicolors
-colorscheme atlantis
-" turns off that wierd orange shit
-if &term =~ '256color'
-        set t_ut=
-endif
 
 " cscope things (ctags but make it vim)
 if has("cscope")
@@ -62,18 +61,18 @@ if has("cscope")
                 let db = findfile("cscope.out", ".;")
                 if (!empty(db))
                         let path = strpart(db, 0, match(db, "/cscope.out$"))
-                        set nocscopeverbose " suppress 'duplicate connection' error
+                        set nocscopeverbose " suppress "duplicate connection" error
                         exe "cs add " . db . " " . path
                         set cscopeverbose
                 endif
         endfunction
-        au BufEnter /* call LoadCscope()
+        au BufEnter * call LoadCscope()
 
 endif
 " -----------------------------------------------------------------------------------
 
-let g:lightline = {'colorscheme': 'atlantis'}
-let g:tex_flavor = 'xetex'
+" let g:lightline = {"colorscheme": "atlantis"}
+let g:tex_flavor = "xetex"
 
 set t_ZH=[3m
 set t_ZR=[23m
@@ -85,6 +84,20 @@ let g:vim_markdown_math = 1
 
 " Auto format on save
 au BufWrite * :Autoformat
+autocmd FileType md let b:autoformat_autoindent=0
 
 " Indentation lines
-let g:indentLine_char = '|'
+" let g:indentLine_char = '|'
+"
+"
+
+" --- Lightline Config for Nord ------------------------
+set laststatus=2
+let g:lightline={"colorscheme": "nord"}
+" let g:airline_theme="nord"
+
+
+" --- Enable Nord Colorscheme
+colorscheme nord
+
+
