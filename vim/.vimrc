@@ -1,103 +1,83 @@
-syntax enable
-set tabstop=8
-set expandtab
-set softtabstop=8
-set number
-filetype indent on
-set autoindent
+set langmenu=en_US " set menu languase to english 
+language en_US.UTF-8             " sets language to English
+set spell               " spell checker
+syntax enable 		" good highlighting
+set tabstop=8 		" make tabs 8 spaces
+set expandtab 
+set number		" line numbers
+filetype indent on 	" good indenting 
+filetype plugin on      " open correct plugin for file types
+set autoindent		
 set conceallevel=2
 
-set nocompatible
-filetype off
-filetype plugin indent on
-set backspace=indent,eol,start
+set backspace=indent,eol,start 
+set mouse=a             " enable mouse use 
 
-set mouse=a
+" -----------------------------------------------------------------------------------
+"  Plugins 
+" -----------------------------------------------------------------------------------
+call plug#begin('~/.vim/plugged')
 
-
-call plug#begin("~/.vim/plugged")
-
-" Plug 'sainnhe/vim-color-atlantis'       " Colorscheme atlantis
-" Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
-Plug 'itchyny/lightline.vim'
-Plug 'arcticicestudio/nord-vim'           " Colorscheme matching TMUX
-Plug 'vim-scripts/c.vim'
-Plug 'gabrielelana/vim-markdown'        " Markdown formatting
-Plug 'lervag/vimtex'                    " Latex
-Plug 'chiel92/vim-autoformat'           " autoformatting
-Plug 'valloric/youcompleteme'           " autocompletiong
-Plug 'jiangmiao/auto-pairs'             " auto match brackets
-" Plug 'yggdroot/indentline'              " indentation lines
+Plug 'itchyny/lightline.vim'            " lightline bar (pretty wiht nord)
+Plug 'arcticicestudio/nord-vim'         " nord theme
+Plug 'chiel92/vim-autoformat'           " autoformatting 
+Plug 'jiangmiao/auto-pairs'             " automaatch braces
+Plug 'tmux-plugins/vim-tmux-focus-events' " needed for clipboard sharing
+Plug 'roxma/vim-tmux-clipboard'         " combine vim and tmux clipboards
+Plug 'valloric/youcompleteme'           " autocompletion
+Plug 'plasticboy/vim-markdown'          " markdown plugin
+Plug 'psf/black'                        " Python autoformatting with black
+Plug 'google/yapf'                      " Python autoformatting with yapf
+Plug 'gilsondev/searchtasks.vim'        " Search TODO, FIXME, and XXX
+Plug 'rust-lang/rust.vim'               " Rust language support
+Plug 'uncrustify/uncrustify'            " Uncrustify plugin
+Plug 'rhysd/vim-clang-format'           "clang formatter
 
 call plug#end()
 
-
-" cscope things (ctags but make it vim)
-if has("cscope")
-        set csprg=/usr/bin/cscope
-        set csto=0
-        set cst
-        set csverb
-        " C symbol
-        nmap <C-@>s :cs find s <C-R>=expand("<cword>")<CR><CR>
-        " definition
-        nmap <C-@>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-        " functions that called by this function
-        nmap <C-@>d :cs find d <C-R>=expand("<cword>")<CR><CR>
-        " funtions that calling this function
-        nmap <C-@>c :cs find c <C-R>=expand("<cword>")<CR><CR>
-        " test string
-        nmap <C-@>t :cs find t <C-R>=expand("<cword>")<CR><CR>
-        " egrep pattern
-        nmap <C-@>e :cs find e <C-R>=expand("<cword>")<CR><CR>
-        " file
-        nmap <C-@>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
-        " files #including this file
-        nmap <C-@>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-
-        " Automatically make cscope connections
-        function! LoadCscope()
-                let db = findfile("cscope.out", ".;")
-                if (!empty(db))
-                        let path = strpart(db, 0, match(db, "/cscope.out$"))
-                        set nocscopeverbose " suppress "duplicate connection" error
-                        exe "cs add " . db . " " . path
-                        set cscopeverbose
-                endif
-        endfunction
-        au BufEnter * call LoadCscope()
-
-endif
-" -----------------------------------------------------------------------------------
-
-" let g:lightline = {"colorscheme": "atlantis"}
-let g:tex_flavor = "xetex"
-
-set t_ZH=[3m
-set t_ZR=[23m
-
-highlight Comments cterm=italic
-
-let g:vim_markdown_math = 1
-" let g:markdown_enable_conceal = 1
-
-" Auto format on save
-au BufWrite * :Autoformat
-autocmd FileType md let b:autoformat_autoindent=0
-
-" Indentation lines
-" let g:indentLine_char = '|'
-"
-"
-
-" --- Lightline Config for Nord ------------------------
+" Enable Lightline bar for Nord 
 set laststatus=2
-let g:lightline={"colorscheme": "nord"}
-" let g:airline_theme="nord"
+let g:lightline={"colorscheme":"nord"}
 
-
-" --- Enable Nord Colorscheme
+" Colorscheme 
 colorscheme nord
 
+" ---------------------------------------------------------------------------------
+" Markdown options
+" ---------------------------------------------------------------------------------
+let g:vim_markdown_new_list_item_indent = 0
+let g:vim_markdown_strikethrough = 1
+let g:vim_markdown_auto_insert_bullets = 1
+let g:vim_markdown_conceal=2
+                        
+" ---------------------------------------------------------------------------------
+" Latex settings for vim-latex
+" ---------------------------------------------------------------------------------
+let g:tex_falvor='latex'
 
+" Fixing italics things
+set t_ZH=[3m
+set t_ZR=[23m
+highlight Comment cterm=italic
+
+" ---------------------------------------------------------------------------------
+"  Autoformatting options/ commands 
+" ---------------------------------------------------------------------------------
+
+" Assign a key for autoformatting
+" noremap <F3> :Autoformat<CR>
+
+" Atoformat on save 
+" au BufWrite * :Autoformat
+
+
+" let g:black_fast = 0
+let g:black_linelength = 120
+" let g:black_skip_string_normalization = 0
+" let g:black_virtualenv = ?
+
+
+" ---------------------------------------------------------------------------------
+"  Task Searching
+" ---------------------------------------------------------------------------------
+let g:searchtasks_list=["TODO", "FIXME", "XXX", "NOTE", "QUESTION"]
